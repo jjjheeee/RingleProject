@@ -25,12 +25,10 @@ schema_view = get_schema_view(
       title="Ringle API",
       default_version='v1',
       description="수강 신청 서비스 API 문서",
-      terms_of_service="https://www.example.com/policies/terms/",
-      contact=openapi.Contact(email="contact@example.com"),
-      license=openapi.License(name="BSD License"),
    ),
    public=True,
    permission_classes=(permissions.AllowAny,),
+   authentication_classes=[],
 )
 
 urlpatterns = [

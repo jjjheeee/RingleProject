@@ -5,7 +5,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, role=None, **extra_fields):
-        print(2222222222222)
+        
         if not email:
             raise ValueError("email은 필수입니다.")
         

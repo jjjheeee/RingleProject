@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,14 +32,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "drf_yasg",
-    "rest_framework",
+    "drf_yasg", # 스웨거
+    "rest_framework", # drf
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'rest_framework_simplejwt.token_blacklist', # token black list
 
     "users",
 ]
@@ -121,7 +123,31 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+# JWT Config
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),  # 2시간
+    'REFRESH_TOKEN_LIFETIME': timedelta(weeks=2),  # 2주
+    # True로 설정할 경우, refresh token을 보내면 새로운 access token과 refresh token이 반환된다.
+    "ROTATE_REFRESH_TOKENS": False,
+    # True로 설정될 경우, 기존에 있던 refresh token은 blacklist가된다.
+    "BLACKLIST_AFTER_ROTATION": False,
+}
+
+# swagger config
+# JWT 인증 헤더 설정
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT 인증 헤더. 예: Bearer "<your token>"',
+        }
+    },
+    'USE_SESSION_AUTH': False,  # 세션 인증 사용 안함 (JWT만 쓸 때)
 }
