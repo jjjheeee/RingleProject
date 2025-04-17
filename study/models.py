@@ -17,7 +17,7 @@ class TutorClass(models.Model):
 
     tutor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="available_times")
     start_time = models.DateTimeField()
-    duration = models.IntegerField(choices=DURATION_CHOICES)
+    duration = models.IntegerField(choices=DURATION_CHOICES, db_index=True)
 
     class Meta:
         ordering = ['start_time']
