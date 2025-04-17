@@ -19,6 +19,18 @@ User = get_user_model()
 class TutorClassAPI(APIView):
     permission_classes = [IsTutor]
 
+    @swagger_auto_schema(
+        # request_body=openapi.Schema(
+        #     type=openapi.TYPE_OBJECT,
+        #     required=['email', 'password'],
+        #     properties={
+        #         'email': openapi.Schema(type=openapi.TYPE_STRING, example='tutor@example.com'),
+        #         'password': openapi.Schema(type=openapi.TYPE_STRING, example='test1234'),
+        #     }
+        # ),
+
+        responses={200: openapi.Response("수업 리스트 조회 완료."), 400: "수업 리스트 조회 실패."}
+    )
     def get(self, request):
         print(request.user)
-        return Response({"message": "로그아웃 되었습니다."}, status=status.HTTP_200_OK)
+        return Response({"message": "수업 리스트 조회 완료."}, status=status.HTTP_200_OK)
