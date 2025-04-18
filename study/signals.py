@@ -11,7 +11,7 @@ def update_tutorclass_true(sender, instance, created, **kwargs):
         tutor_class.status = True
         tutor_class.save()
 
-@receiver(post_save, sender=StudentClass)
+@receiver(post_delete, sender=StudentClass)
 def update_tutorclass_flase(sender, instance, **kwargs):
     tutor_class = instance.tutor_class
     tutor_class.status = False

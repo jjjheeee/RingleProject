@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist', # token black list
 
     "users",
-    "study"
+    # "study",
+    "study.apps.StudyConfig"
 ]
 
 MIDDLEWARE = [

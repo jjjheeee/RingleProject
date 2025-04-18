@@ -11,8 +11,8 @@ from drf_yasg import openapi
 
 from users.permissions import IsStudent, IsTutor
 
-from .serializers import TutorClassSerializer
-from .models import TutorClass
+from .serializers import TutorClassSerializer, StudentClassSerializer
+from .models import TutorClass, StudentClass
 
 from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
@@ -132,5 +132,80 @@ class StudentClassAPI(APIView):
 
     permission_classes=[IsAuthenticated]
 
-    
+    @swagger_auto_schema(
+        responses={
+            200: openapi.Response(
+                description="신청한 수업 리스트",
+                schema=StudentClassSerializer(many=True)  # 실제 사용하는 serializer로 대체
+            )
+        }
+    )
+    def get(self, request):
+        """
+            내가 신청한 수업을 조회합니다.
+        """
+        student = request.user
 
+        classes = StudentClass.objects.filter(student=student)
+        serializer = StudentClassSerializer(classes, many=True)
+
+        data = {
+            "data" : serializer.data
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+    
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["class_id"],
+            properties={
+                "class_id": openapi.Schema(type=openapi.TYPE_INTEGER, description="신청할 수업 ID"),
+            }
+        ),
+        responses={201: "수업 신청 완료", 400: "신청 실패", 404: "존재하지 않는 수업입니다."}
+    )
+    def post(self, request):
+        """
+            수업신청
+        """
+        class_id = request.data.get("class_id")
+        tutor_class = get_object_or_404(TutorClass, id=class_id)
+
+        if tutor_class.status:  # 이미 신청된 수업
+            return Response({"message": "이미 신청된 수업입니다."}, status=400)
+
+        StudentClass.objects.create(student=request.user, tutor_class=tutor_class)
+
+        return Response({"message": "수업신청이 완료되었습니다."}, status=201)
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "class_id", openapi.IN_QUERY,
+                description="취소할 수업의 ID",
+                type=openapi.TYPE_INTEGER,
+                required=True,
+                example=1
+            )
+        ],
+        responses={
+            200: openapi.Response("수업이 취소되었습니다."),
+            403: "권한이 없는 수업입니다.",
+            404: "존재하지 않는 수업입니다."
+        }
+    )
+    def delete(self, request):
+        """
+            신청한 수업을 취소합니다.
+        """
+
+        class_id = request.query_params.get("class_id")
+
+        instance = get_object_or_404(StudentClass, pk=class_id)
+
+        if instance.student != request.user:
+            return Response({"message": "권한이 없는 수업입니다."}, status=status.HTTP_403_FORBIDDEN)
+
+        instance.delete()
+        return Response({"message": "수업이 취소되었습니다."}, status=status.HTTP_200_OK)

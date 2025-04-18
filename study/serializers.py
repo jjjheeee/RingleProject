@@ -3,14 +3,14 @@ from rest_framework.response import Response
 
 from django.utils import timezone
 
-from .models import TutorClass
+from .models import TutorClass, StudentClass
 
 from datetime import timedelta
 
 class TutorClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = TutorClass
-        fields = ["tutor", "start_time", "duration"]
+        fields = ("tutor", "start_time", "duration")
         read_only_fields = ["tutor"]
 
     def validate_start_time(self, value):
@@ -39,3 +39,9 @@ class TutorClassSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"message": "이미 겹치는 수업이 존재합니다."})
 
         return data
+
+class StudentClassSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = StudentClass
+        fields = "__all__"
