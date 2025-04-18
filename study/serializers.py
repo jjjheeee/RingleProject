@@ -5,24 +5,31 @@ from django.utils import timezone
 
 from .models import TutorClass, StudentClass
 
-from datetime import timedelta
+from django.utils import timezone
+from django.conf import settings
+import pytz
 
 class TutorClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = TutorClass
-        fields = ("tutor", "start_time", "duration")
+        fields = ("id", "tutor", "start_time", "duration")
         read_only_fields = ["tutor"]
 
     def validate_start_time(self, value):
+        # 만약 timezone 정보가 없거나 local time이라면, settings.TIME_ZONE으로 간주하고 UTC로 변환
+        if timezone.is_naive(value):
+            local_tz = pytz.timezone(settings.TIME_ZONE)
+            value = local_tz.localize(value)  # timezone 붙이기
+            value = value.astimezone(pytz.UTC)  # UTC로 변환
 
-        # 시작시간은 정각 or 30분
+        # 정각/30분 체크
         if value.minute not in (0, 30):
             raise serializers.ValidationError("수업 시작 시간은 정각 또는 30분만 가능합니다.")
-        
-        # start_time이 이미 과거 시간이라면 유효하지 않게 처리
+
+        # 과거 시간인지 체크 (UTC 기준으로 비교)
         if value < timezone.now():
             raise serializers.ValidationError("이미 지난 시간입니다.")
-        
+
         return value
 
     def validate(self, data):

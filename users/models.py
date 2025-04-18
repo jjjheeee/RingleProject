@@ -33,14 +33,20 @@ class User(AbstractBaseUser, PermissionsMixin):
         TUTOR = "tutor", "튜터"
 
     email = models.EmailField(
-        unique=True, db_index=True
+        unique=True, 
+        db_index=True
     )
+    
     role = models.CharField(
-        max_length=10, choices=Role.choices, db_index=True
+        max_length=10, 
+        choices=Role.choices, 
+        db_index=True
     )
+
     is_active = models.BooleanField(
         default=True
     )
+
     is_staff = models.BooleanField(
         default=False
     )

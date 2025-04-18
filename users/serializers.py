@@ -46,18 +46,11 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # 이메일 존재 여부 확인
         if not user_instance:
-            return Response({"message": "사용자를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message":"사용자를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
 
         # 비밀번호 확인
-        # user = authenticate(email=email, password=password)
         if not user_instance.check_password(password):
-            return Response({"message": "비밀번호가 틀렸습니다."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # if not user_instance.is_active:
-        #     return Response(
-        #         msg="이메일 인증을 진행해주세요.",
-        #         status=403
-        #     )
+            return Response({"message":"비밀번호가 틀렸습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         # 기본 JWT 토큰 생성 로직 실행
         tokens = super().validate(attrs)
