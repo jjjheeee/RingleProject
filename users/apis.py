@@ -48,10 +48,10 @@ class CustomTokenObtainPairAPI(TokenObtainPairView):
     @swagger_auto_schema(
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
-            required=['email', 'password'],
+            required=["email", "password"],
             properties={
-                'email': openapi.Schema(type=openapi.TYPE_STRING, example='tutor@example.com'),
-                'password': openapi.Schema(type=openapi.TYPE_STRING, example='test1234'),
+                "email": openapi.Schema(type=openapi.TYPE_STRING, example="tutor@example.com"),
+                "password": openapi.Schema(type=openapi.TYPE_STRING, example="test1234"),
             }
         ),
 
@@ -72,7 +72,7 @@ class CustomTokenObtainPairAPI(TokenObtainPairView):
             return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 @swagger_auto_schema(
-    method='post',
+    method="post",
     request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
         required=["refresh"],
@@ -85,7 +85,7 @@ class CustomTokenObtainPairAPI(TokenObtainPairView):
         403: openapi.Response(description="Refresh 토큰 없음 또는 유효하지 않음"),
     }
 )
-@api_view(['POST'])
+@api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def logout_api(request):
     """

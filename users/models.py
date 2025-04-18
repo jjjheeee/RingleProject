@@ -21,16 +21,16 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
 
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
 
-        return self.create_user(email, password, role='tutor', **extra_fields)
+        return self.create_user(email, password, role="tutor", **extra_fields)
     
 class User(AbstractBaseUser, PermissionsMixin):
 
     class Role(models.TextChoices):
-        STUDENT = 'student', '학생'
-        TUTOR = 'tutor', '튜터'
+        STUDENT = "student", "학생"
+        TUTOR = "tutor", "튜터"
 
     email = models.EmailField(
         unique=True, db_index=True
@@ -47,4 +47,4 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"

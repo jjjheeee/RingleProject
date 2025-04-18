@@ -10,8 +10,8 @@ from datetime import timedelta
 class TutorClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = TutorClass
-        fields = ['tutor', 'start_time', 'duration']
-        read_only_fields = ['tutor']
+        fields = ["tutor", "start_time", "duration"]
+        read_only_fields = ["tutor"]
 
     def validate_start_time(self, value):
 
@@ -28,9 +28,9 @@ class TutorClassSerializer(serializers.ModelSerializer):
     def validate(self, data):
         # 임시 인스턴스 생성
         instance = TutorClass(
-            tutor=self.context['request'].user,
-            start_time=data['start_time'],
-            duration=data['duration']
+            tutor=self.context["request"].user,
+            start_time=data["start_time"],
+            duration=data["duration"]
         )
 
         try:
