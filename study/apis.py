@@ -132,3 +132,5 @@ class StudentClassAPI(APIView):
 
     permission_classes=[IsAuthenticated]
 
+    
+
