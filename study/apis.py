@@ -72,7 +72,7 @@ class TutorClassAPI(APIView):
             properties={
                 "start_time":openapi.Schema(type=openapi.TYPE_STRING,
                     format=openapi.FORMAT_DATETIME,  # "YYYY-MM-DDTHH:MM:SSZ" 형식
-                    example="2025-06-07T13:00:00+09:00"  # 예시 날짜 및 시간
+                    example="2025-06-07T13:00:00"  # 예시 날짜 및 시간
                 ),
                 "duration":openapi.Schema(type=openapi.TYPE_INTEGER, example=30),
             }
