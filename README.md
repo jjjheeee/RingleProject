@@ -36,7 +36,7 @@
 5. **swagger api test**  
    [http://localhost:8000/swagger/](http://localhost:8000/swagger/)
 6. DBeaver 사용
-   - 압축폴더 내에 project 폴더 안에 db.sqllite3 파일로 SQLLite 커넥션 연결
+   - 압축폴더 내에 project 폴더 안에 db.sqlite3 파일로 SQLite 커넥션 연결
    - Test 계정 :
       - Tutor : tutor@example.com / test1234
       - Student : student@example.com / test1234
