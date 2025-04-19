@@ -31,6 +31,7 @@
    ```
 4. **Django 서버 실행 하기**
    ```bash
+   ** ls로 해당 폴더 내에 manage.py가 있어야한다.
    python manage.py runserver
    ```
 5. **swagger api test**  
