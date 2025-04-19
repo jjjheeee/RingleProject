@@ -1,7 +1,7 @@
 # RingleProject
 
 ## Skills Used  
-- Python
+- Python 3.12.4
 - Django REST Framework (DRF)
 - SQLite  
 - Git Bash  
