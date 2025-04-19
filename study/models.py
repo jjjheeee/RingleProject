@@ -15,10 +15,10 @@ class TutorClass(models.Model):
         (60, "60분"),
     )
 
-    tutor = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "open_class_times")
+    tutor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="open_class_times")
     start_time = models.DateTimeField()
-    duration = models.IntegerField(choices = DURATION_CHOICES, db_index = True)
-    status = models.BooleanField(default = False, db_index = True)
+    duration = models.IntegerField(choices=DURATION_CHOICES, db_index=True)
+    status = models.BooleanField(default=False, db_index=True)
 
     class Meta:
         ordering = ["start_time"]
@@ -38,17 +38,17 @@ class TutorClass(models.Model):
 
     @property
     def end_time(self):
-        return self.start_time + timedelta(minutes = self.duration)
+        return self.start_time + timedelta(minutes=self.duration)
 
 class StudentClass(models.Model):
 
     tutor_class = models.OneToOneField(  # 수업 하나당 한 명만 신청 가능하게
         TutorClass,
-        on_delete = models.CASCADE,
-        related_name = "student_class"
+        on_delete=models.CASCADE,
+        related_name="student_class"
     )
-    student = models.ForeignKey(User, on_delete = models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add = True)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('tutor_class', 'student')  # 중복 신청 방지
